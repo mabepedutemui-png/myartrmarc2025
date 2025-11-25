@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Marc's Art Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="description" content="Marc's Art Studio — digital sketches, paintings and personal portfolio">
+
+  <style>
+    :root{
+      --brown:#7B5E3A;
+      --brown-deep:#5A4228;
+      --beige:#EDE0C8;
+      --sand:#C9B79C;
+      --muted:#7D6A5B;
+      --glass: rgba(255,255,255,0.6);
+      --radius:16px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: linear-gradient(180deg,var(--beige),#f7f1e7); color:var(--brown-deep); -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale; line-height:1.45;
+    }
+
+    /* NAV */
+    .nav{
+      position:sticky; top:0; z-index:40; backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.25)); border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--sand),var(--brown));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-family:'Playfair Display';}
+    .brand h1{margin:0;font-family:'Playfair Display';font-size:18px;color:var(--brown-deep)}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .cta{background:var(--brown); color:var(--beige); padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+
+    /* HERO */
+    .hero{padding:64px 0 36px}
+    .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:center}
+    .hero-left h2{font-family:'Playfair Display';font-size:40px;margin:0 0 12px;color:var(--brown-deep)}
+    .hero-left p{margin:0 0 20px;color:var(--muted)}
+    .hero-actions{display:flex;gap:12px}
+
+    /* CARD PREVIEW */
+    .preview-card{background:linear-gradient(180deg,var(--beige),#fff); border-radius:18px;padding:16px; box-shadow:0 6px 20px rgba(50,40,30,0.08)}
+    .preview img{width:100%;height:260px;object-fit:cover;border-radius:12px}
+    .meta{display:flex;justify-content:space-between;margin-top:12px}
+
+    /* SECTIONS */
+    section{padding:48px 0}
+    h3{font-family:'Playfair Display';color:var(--brown-deep);margin:0 0 12px}
+    .lead{color:var(--muted);margin:0 0 24px}
+
+    /* ABOUT */
+    .about-grid{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+    .about-card{background:var(--beige);padding:20px;border-radius:12px}
+
+    /* SKILLS */
+    .skills{display:flex;gap:12px;flex-wrap:wrap}
+    .skill{background:#fff;padding:10px 14px;border-radius:999px;border:1px solid rgba(0,0,0,0.04);font-weight:600;color:var(--brown-deep)}
+
+    /* GALLERY */
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .art-card{background:linear-gradient(180deg,#fff,var(--beige));border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 6px 18px rgba(60,50,40,0.06)}
+    .art-card img{width:100%;height:220px;object-fit:cover;display:block}
+    .art-caption{padding:10px;font-size:14px;color:var(--muted)}
+
+    /* CONTACT */
+    .contact-grid{display:grid;grid-template-columns:1fr 360px;gap:24px}
+    .form input,.form textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);margin-bottom:12px}
+    .form button{background:var(--brown);color:var(--beige);padding:12px 16px;border-radius:10px;border:0;font-weight:700}
+
+    /* FOOTER */
+    footer{padding:28px 0;color:var(--muted);text-align:center}
+
+    /* LIGHTBOX */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;padding:24px;z-index:80;opacity:0;pointer-events:none;transition:opacity .18s}
+    .lightbox.show{opacity:1;pointer-events:auto}
+    .lightbox img{max-width:100%;max-height:85vh;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+
+    /* RESPONSIVE */
+    @media(max-width:980px){
+      .hero-grid{grid-template-columns:1fr}
+      .about-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      nav ul{display:none}
+      .mobile-only{display:block}
+    }
+    @media(max-width:520px){
+      .gallery-grid{grid-template-columns:1fr}
+      .logo{width:40px;height:40px}
+      .hero-left h2{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <h1>Marc's Art Studio</h1>
+          <div style="font-size:12px;color:var(--muted)">Digital sketches & paintings</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#arts">Arts</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <a class="cta" href="#arts">View Gallery</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO / LANDING -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h2>Marc's Art Studio</h2>
+          <p class="lead">A curated collection of digital sketches, studies, and finished paintings. My work explores texture, warm palettes, and intimate composition — welcome to my canvas.</p>
+          <div class="hero-actions">
+            <a class="cta" href="#arts">Explore Art</a>
+            <a href="#contact" style="padding:10px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:var(--muted);font-weight:700">Contact Me</a>
+          </div>
+        </div>
+
+        <aside class="preview-card">
+          <div class="preview"><img src="image/art1.png" alt="Featured artwork"></div>
+          <div class="meta">
+            <div>
+              <div style="font-weight:700">Featured</div>
+              <div style="font-size:13px;color:var(--muted)">Sorcerer Children — 2023</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700;color:var(--brown-deep)">$inquire</div>
+              <div style="font-size:12px;color:var(--muted)">Print & License</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-grid">
+        <div>
+          <h3>About Marc</h3>
+          <p class="lead">My digital artwork focuses on portraits and immersive studies, using warm colors to bring characters and stories to life.</p>
+          <div class="about-card">
+            <p style="margin:0 0 8px">Hi, I’m Marc Louise, a digital artist based in Sto. Niño Norte, Arevalo, Iloilo City, Philippines. I specialize in digital sketches, paintings, and character designs. My work explores warm color palettes, textures, and intimate storytelling, aiming to bring emotions and moments to life through my art.
+
+I create my artwork using Ibis Paint and PicsArt for editing, and I’m always exploring new techniques to refine my style. Commissions and collaborations are welcome, both locally and remotely.</p>
+            <ul style="margin:12px 0 0 18px;color:var(--muted)">
+              <li>Specialties: digital painting, character design, color studies</li>
+              <li>Tools: Ibis Paint, PicsArt, FlipaClip</li>
+              <li>Available for commissions & collaborations</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h3>Quick Info</h3>
+          <div style="background:#fff;padding:16px;border-radius:12px">
+            <p style="margin:0 0 8px"><strong>Location</strong><br><span style="color:var(--muted)">Sto. Niño Norte, Arevalo, Iloilo City, Philippines (remote commissions welcome)</span></p>
+            <p style="margin:0 0 8px"><strong>Studio</strong><br><span style="color:var(--muted)">Digital — Tablet, Canvas & Paper</span></p>
+            <p style="margin:0"><strong>Contact</strong><br><span style="color:var(--muted)">hello@marc-studio.example</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <h3>Skills & Tools</h3>
+      <p class="lead">Different kind of art style i used in my digital work.</p>
+      <div class="skills">
+        <div class="skill">Digital Art</div>
+        <div class="skill">Sketching</div>
+        <div class="skill">Animation</div>
+        <div class="skill">Character Design</div>
+        <div class="skill">Comics Poster</div>
+        <div class="skill">Comics</div>
+        <div class="skill">Mahnwa</div>
+      </div>
+    </section>
+
+    <!-- ARTS / GALLERY -->
+    <section id="arts">
+      <h3>Gallery</h3>
+      <p class="lead">Click any image to open it larger.</p>
+
+      <div class="gallery-grid" id="gallery">
+        <div class="art-card" data-full="images/art1-large.jpg"><img src="images/art1.jpg" alt="Art 1"><div class="art-caption">Sorcerer Children — 2023</div></div>
+        <div class="art-card" data-full="images/art2-large.jpg"><img src="images/art2.jpg" alt="Art 2"><div class="art-caption">Sketch — Portrait</div></div>
+        <div class="art-card" data-full="images/art3-large.jpg"><img src="images/art3.jpg" alt="Art 3"><div class="art-caption">Warm Afternoon</div></div>
+        <div class="art-card" data-full="images/art4-large.jpg"><img src="images/art4.jpg" alt="Art 4"><div class="art-caption">Study: Hands</div></div>
+        <div class="art-card" data-full="images/art5-large.jpg"><img src="images/art5.jpg" alt="Art 5"><div class="art-caption">Portrait Study</div></div>
+        <div class="art-card" data-full="images/art6-large.jpg"><img src="images/art6.jpg" alt="Art 6"><div class="art-caption">Evening Scene</div></div>
+        <div class="art-card" data-full="images/art7-large.jpg"><img src="images/art7.jpg" alt="art 7"><div class="art-caption">love you labs</div></div>
+        <div class="art-card" data-full="images/art8-large.jpg"><img src="images/art8.jpg" alt="art 8"><div class="art-caption">love you labs</div></div>
+        <div class="art-card" data-full="images/art9-large.jpg"><img src="images/art9.jpg" alt="art 9"><div class="art-caption">love you labs</div></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h3>Contact</h3>
+      <p class="lead">For commissions, prints, or collaborations — send a message.</p>
+
+      <div class="contact-grid">
+        <div>
+          <form class="form" action="mailto:hello@marc-studio.example" method="post" enctype="text/plain">
+            <input type="text" name="name" placeholder="Your Name" autocomplete="name" required>
+            <input type="email" name="email" placeholder="Your Email" autocomplete="email" required>
+            <input type="text" name="subject" placeholder="Subject" autocomplete="organization-title">
+            <textarea name="message" rows="6" placeholder="Message" autocomplete="off"></textarea>
+            <button type="submit">Send message</button>
+          </form>
+          <p style="font-size:13px;color:var(--muted);margin-top:8px">
+            Tip: Make sure your email app is set up, or connect with a backend form service (Formspree, Getform) for professional submissions and better autofill support.
+          </p>
+        </div>
+
+        <aside>
+          <div style="background:var(--beige);padding:18px;border-radius:12px">
+            <h4 style="margin:0 0 10px">Advice:</h4>
+            <p style="color:var(--muted);margin:0 0 10px">
+              since the contact form is not reponsive and not working, please copy the facebook link and paste and message the domain owner.
+            </p>
+            <div style="font-size:13px;color:var(--muted)"><strong>Rates:</strong> Available on request</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <footer>
+    <div class="container">© <strong>Marc's Art Studio</strong> — All artwork © Marc. 
+      <div style="margin-top:6px;color:var(--muted);font-size:13px">Built with care • Replace placeholder images in /images/ before publishing</div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if(href.length>1){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      })
+    });
+
+    // Gallery lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    document.getElementById('gallery').addEventListener('click', e => {
+      const card = e.target.closest('.art-card');
+      if(!card) return;
+      const full = card.dataset.full || card.querySelector('img').src;
+      lbImg.src = full;
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden','false');
+    });
+    lightbox.addEventListener('click', ()=>{ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); lbImg.src = ''; });
+
+    // Accessibility: close on Esc
+    document.addEventListener('keydown', e => { if(e.key === 'Escape'){ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); lbImg.src = ''; } });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
